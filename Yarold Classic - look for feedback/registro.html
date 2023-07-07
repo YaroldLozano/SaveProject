@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Registro de usuario</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #502424;
+    }
+    
+    h1 {
+      text-align: center;
+      color: #fff;
+      font-size: 32px;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    
+    form {
+      max-width: 300px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    }
+    
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: none;
+      border-bottom: 2px solid #2196F3;
+    }
+    
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="password"]:focus {
+      outline: none;
+      border-color: #1E88E5;
+    }
+    
+    input[type="submit"] {
+      width: 100%;
+      padding: 10px;
+      background-color: #329ef7;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.5s;
+    }
+    
+    input[type="submit"]:hover {
+      background-color: #0088ff;
+    }
+    
+    .success {
+      color: green;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="sing-up">
+    <h1>Registro de Usuario</h1>
+    
+    <form id="registerForm" onsubmit="return validarFormulario()">
+      <input type="text" id="nombre" placeholder="Nombre" class="form-control" required>
+      <input type="email" id="correo" placeholder="Correo electrónico" class="form-control" required>
+      <input type="password" id="contrasena" placeholder="Contraseña" class="form-control" required>
+      <input type="password" id="confirmarContrasena" placeholder="Confirmar contraseña" class="form-control" required>
+      <input type="submit" value="Registrarse" class="btn btn-primary">
+      <p class="success" id="successMensaje" style="display: none;"></p>
+    </form>
+  </div>>
+  
+  <script>
+    function validarFormulario() {
+      var nombre = document.getElementById("nombre").value;
+      var correo = document.getElementById("correo").value;
+      var contrasena = document.getElementById("contrasena").value;
+      var confirmarContrasena = document.getElementById("confirmarContrasena").value;
+      var successMensaje = document.getElementById("successMensaje");
+      
+      // Validar coincidencia de contraseñas
+      if (contrasena !== confirmarContrasena) {
+        successMensaje.textContent = "Las contraseñas no coinciden";
+        successMensaje.style.color = "red";
+        successMensaje.style.display = "block";
+        return false;
+      }
+      
+      // Crear un objeto usuario con los datos ingresados
+      var usuario = {
+        nombre: nombre,
+        correo: correo,
+        contrasena: contrasena
+      };
+      
+      // Obtener el arreglo de usuarios almacenado en el Local Storage
+      var usuariosArray = JSON.parse(localStorage.getItem("usuarios")) || [];
+      
+      // Verificar si el correo ya está registrado
+      var usuarioExistente = usuariosArray.find(function(u) {
+        return u.correo === correo;
+      });
+      
+      if (usuarioExistente) {
+        successMensaje.textContent = "El correo electrónico ya está registrado";
+        successMensaje.style.color = "red";
+        successMensaje.style.display = "block";
+        return false;
+      }
+      
+      // Agregar el usuario al arreglo de usuarios
+      usuariosArray.push(usuario);
+      
+      // Guardar el arreglo actualizado en el almacenamiento local
+      localStorage.setItem("usuarios", JSON.stringify(usuariosArray));
+      
+      // Mostrar mensaje de éxito y redirigir a la página principal
+      successMensaje.textContent = "Registro exitoso. Ahora puedes iniciar sesión.";
+      successMensaje.style.color = "green";
+      successMensaje.style.display = "block";
+      
+      setTimeout(function() {
+        window.location.href = "index.html"; // Redirigir a la página principal después de 2 segundos
+      }, 2000);
+      
+      return false;
+    }
+  </script>
+</body>
+</html>

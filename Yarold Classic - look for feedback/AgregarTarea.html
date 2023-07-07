@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Agregar Tarea</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    /* Estilos del formulario */
+    form {
+      width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+    
+    .logo {
+      position: relative;
+      float: left;
+      width: -30px;
+      height: 50px;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    
+    input[type="submit"] {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+    
+    /* Estilos de la vista previa de la imagen */
+    #imagePreview {
+      width: 200px;
+      height: 200px;
+      border: 1px solid #ddd;
+      margin-top: 10px;
+      background-size: cover;
+      background-position: center;
+    }
+    
+    /* Estilos del menú superior */
+    .menu {
+      background-color: #333;
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+    }
+    
+    .menu ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .menu ul li {
+      display: inline-block;
+      margin-right: 10px;
+    }
+    
+    .menu ul li a {
+      color: #fff;
+      text-decoration: none;
+      padding: 5px 10px;
+    }
+
+    .menu ul li a:hover{
+      color: rgb(255, 0, 0);
+    }
+
+    .menu label {
+      cursor: pointer;
+      display: none;
+    }
+
+    input[type="submit"] {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+    
+    /* Estilos del contenedor de la imagen de fondo */
+    .background-image {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("fondo.jpg");
+      background-size: cover;
+      z-index: -1;
+    }
+  </style>
+</head>
+<body>
+  <div class="menu">
+    <a href="menu.html" class="logo"><img src="logo.jpeg" alt="Logo"></a>
+    <ul>
+      <li><a href="AgregarTarea.html">Agregar tarea</a></li>
+      <li><a href="consultar_tareas.html">Consultar tarea</a></li>
+      <li><a href="calendario.html">Horario</a></li>
+    </ul>
+    <div class="search-bar">
+      
+    </div>
+  </div>
+
+  <form id="taskForm">
+    <h1>Agregar Tarea</h1>
+    
+    <div class="form-group">
+      <label for="taskId">ID de tarea:</label>
+      <input type="text" id="taskId" class="form-control" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="projectName">Nombre del proyecto:</label>
+      <input type="text" id="projectName" class="form-control" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="description">Descripción:</label>
+      <textarea id="description" class="form-control" rows="4" required></textarea>
+    </div>
+    
+    <div class="form-group">
+      <label for="details">Detalles:</label>
+      <textarea id="details" class="form-control" rows="4" required></textarea>
+    </div>
+    
+    <div class="form-group">
+      <label for="members">Miembros:</label>
+      <input type="text" id="members" class="form-control" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="startDate">Fecha de inicio:</label>
+      <input type="date" id="startDate" class="form-control" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="dueDate">Fecha límite:</label>
+      <input type="date" id="dueDate" class="form-control" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="image">Imagen:</label>
+      <input type="file" id="image" class="form-control-file" accept="image/*" required>
+      <div id="imagePreview"></div>
+    </div>
+    
+    <input type="submit" value="Agregar Tarea" class="btn btn-primary">
+  </form>
+  
+  <div class="background-image"></div>
+  
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    // Código JavaScript para el manejo del formulario
+    document.getElementById("taskForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      
+      var taskId = document.getElementById("taskId").value;
+      var projectName = document.getElementById("projectName").value;
+      var description = document.getElementById("description").value;
+      var details = document.getElementById("details").value;
+      var members = document.getElementById("members").value;
+      var startDate = document.getElementById("startDate").value;
+      var dueDate = document.getElementById("dueDate").value;
+      
+      var imageInput = document.getElementById("image");
+      var imageFile = imageInput.files[0];
+      
+      // Crear un objeto tarea con los datos ingresados
+      var task = {
+        id: taskId,
+        projectName: projectName,
+        description: description,
+        details: details,
+        members: members,
+        startDate: startDate,
+        dueDate: dueDate,
+        image: imageFile
+      };
+      
+      // Agregar la tarea al arreglo de tareas
+      var tasksArray = JSON.parse(localStorage.getItem("tasks")) || [];
+      tasksArray.push(task);
+      
+      // Guardar el arreglo actualizado en el almacenamiento local
+      localStorage.setItem("tasks", JSON.stringify(tasksArray));
+      
+      // Redireccionar a la página de consulta de tareas
+      window.location.href = "consultar_tareas.html";
+    });
+    
+    // Código JavaScript para mostrar una vista previa de la imagen seleccionada
+    document.getElementById("image").addEventListener("change", function(event) {
+      var imageFile = event.target.files[0];
+      var imagePreview = document.getElementById("imagePreview");
+      
+      var reader = new FileReader();
+      reader.onload = function() {
+        imagePreview.style.backgroundImage = "url(" + reader.result + ")";
+      };
+      
+      reader.readAsDataURL(imageFile);
+    });
+  </script>
+</body>
+</html>

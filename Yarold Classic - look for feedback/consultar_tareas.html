@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+
+<html>
+  
+<head>
+  <title>Consultar Tarea</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      background-color: #000;
+    }
+
+    .menu {
+      background-color: #333;
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .menu ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .menu ul li {
+      display: inline-block;
+      margin-right: 10px;
+    }
+
+    .menu ul li a {
+      color: #fff;
+      text-decoration: none;
+      padding: 5px 10px;
+    }
+
+    .menu ul li a:hover{
+      color: rgb(255, 0, 0);
+    }
+
+    .menu label {
+      cursor: pointer;
+      display: none;
+    }
+
+    .logo {
+      position: relative;
+      float: left;
+      width: -30px;
+      height: 50px;
+    }
+
+    #searchForm {
+      width: 500px;
+      margin: 20px auto;
+    }
+
+    #searchInput {
+      width: 70%;
+      padding: 5px;
+      border: none;
+      border-radius: 3px;
+    }
+
+    #searchButton {
+      padding: 5px 10px;
+      background-color: #2196F3;
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    #taskDetails {
+      width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+      color: #000;
+    }
+
+    #taskDetails h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #2196F3;
+    }
+
+    #taskDetails p {
+      margin-bottom: 10px;
+    }
+
+    #taskImagePreview {
+      width: 200px;
+      height: 200px;
+      border: 1px solid #ddd;
+      margin-top: 10px;
+      background-size: cover;
+      background-position: center;
+    }
+
+    #editButton,
+    #saveButton {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      background-color: #2196F3;
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    .background-image {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("fondo.jpg");
+      background-size: cover;
+      z-index: -1;
+    }
+  </style>
+</head>
+<body>
+  <div class="menu">
+    <a href="menu.html" class="logo"><img src="logo.jpeg" alt="Logo"></a>
+    <ul>
+      <li><a href="AgregarTarea.html">Agregar tarea</a></li>
+      <li><a href="consultar_tareas.html">Consultar tarea</a></li>
+      <li><a href="calendario.html">Horario</a></li>
+    </ul>
+    <div class="search-bar">
+      <form id="searchForm">
+        <input type="text" id="searchInput" placeholder="Buscar por ID de tarea">
+        <input type="submit" id="searchButton" value="Buscar">
+      </form>
+    </div>
+  </div>
+
+  <div id="taskDetails">
+    <h1>Detalles de la tarea</h1>
+    <p id="taskIdLabel">ID:</p>
+    <p id="taskProjectNameLabel">Nombre del proyecto:</p>
+    <p id="taskDescriptionLabel">Descripción:</p>
+    <p id="taskDetailsLabel">Detalles:</p>
+    <p id="taskMembersLabel">Miembros:</p>
+    <p id="taskStartDateLabel">Fecha de inicio:</p>
+    <p id="taskDueDateLabel">Fecha límite:</p>
+    <div id="taskImagePreview"></div>
+    <input type="button" id="editButton" value="Editar">
+    <input type="button" id="saveButton" value="Guardar" style="display: none;">
+    <input type="button" id="deleteButton" value="Eliminar" style="display: none;">
+
+  </div>
+
+  <div class="background-image"></div>
+
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    // Código JavaScript para la búsqueda y edición de tareas
+    document.getElementById("searchForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      var searchId = document.getElementById("searchInput").value;
+      var tasksArray = JSON.parse(localStorage.getItem("tasks")) || [];
+
+      var task = tasksArray.find(function(item) {
+        return item.id === searchId;
+      });
+
+      if (task) {
+        showTaskDetails(task);
+      } else {
+        resetTaskDetails();
+        alert("No se encontró ninguna tarea con el ID proporcionado.");
+      }
+    });
+
+    function showTaskDetails(task) {
+      document.getElementById("taskIdLabel").innerHTML = "ID: " + task.id;
+      document.getElementById("taskProjectNameLabel").innerHTML = "Nombre del proyecto: " + task.projectName;
+      document.getElementById("taskDescriptionLabel").innerHTML = "Descripción: " + task.description;
+      document.getElementById("taskDetailsLabel").innerHTML = "Detalles: " + task.details;
+      document.getElementById("taskMembersLabel").innerHTML = "Miembros: " + task.members;
+      document.getElementById("taskStartDateLabel").innerHTML = "Fecha de inicio: " + task.startDate;
+      document.getElementById("taskDueDateLabel").innerHTML = "Fecha límite: " + task.dueDate;
+
+      var taskImagePreview = document.getElementById("taskImagePreview");
+      taskImagePreview.style.backgroundImage = "url(" + task.image + ")";
+    }
+
+    function resetTaskDetails() {
+      document.getElementById("taskIdLabel").innerHTML = "ID:";
+      document.getElementById("taskProjectNameLabel").innerHTML = "Nombre del proyecto:";
+      document.getElementById("taskDescriptionLabel").innerHTML = "Descripción:";
+      document.getElementById("taskDetailsLabel").innerHTML = "Detalles:";
+      document.getElementById("taskMembersLabel").innerHTML = "Miembros:";
+      document.getElementById("taskStartDateLabel").innerHTML = "Fecha de inicio:";
+      document.getElementById("taskDueDateLabel").innerHTML = "Fecha límite:";
+
+      var taskImagePreview = document.getElementById("taskImagePreview");
+      taskImagePreview.style.backgroundImage = "url(" + task.image + ")";
+    }
+
+    function toggleEdit() {
+      var editButton = document.getElementById("editButton");
+      var saveButton = document.getElementById("saveButton");
+      
+
+      editButton.style.display = "none";
+      saveButton.style.display = "inline-block";
+     
+
+      var taskIdLabel = document.getElementById("taskIdLabel");
+      var taskProjectNameLabel = document.getElementById("taskProjectNameLabel");
+      var taskDescriptionLabel = document.getElementById("taskDescriptionLabel");
+      var taskDetailsLabel = document.getElementById("taskDetailsLabel");
+      var taskMembersLabel = document.getElementById("taskMembersLabel");
+      var taskStartDateLabel = document.getElementById("taskStartDateLabel");
+      var taskDueDateLabel = document.getElementById("taskDueDateLabel");
+
+      var taskIdText = taskIdLabel.innerText;
+      var taskProjectNameText = taskProjectNameLabel.innerText;
+      var taskDescriptionText = taskDescriptionLabel.innerText;
+      var taskDetailsText = taskDetailsLabel.innerText;
+      var taskMembersText = taskMembersLabel.innerText;
+      var taskStartDateText = taskStartDateLabel.innerText;
+      var taskDueDateText = taskDueDateLabel.innerText;
+
+      var taskIdInput = createTextInput(taskIdText);
+      var taskProjectNameInput = createTextInput(taskProjectNameText);
+      var taskDescriptionInput = createTextInput(taskDescriptionText);
+      var taskDetailsInput = createTextInput(taskDetailsText);
+      var taskMembersInput = createTextInput(taskMembersText);
+      var taskStartDateInput = createTextInput(taskStartDateText);
+      var taskDueDateInput = createTextInput(taskDueDateText);
+
+      replaceElement(taskIdLabel, taskIdInput);
+      replaceElement(taskProjectNameLabel, taskProjectNameInput);
+      replaceElement(taskDescriptionLabel, taskDescriptionInput);
+      replaceElement(taskDetailsLabel, taskDetailsInput);
+      replaceElement(taskMembersLabel, taskMembersInput);
+      replaceElement(taskStartDateLabel, taskStartDateInput);
+      replaceElement(taskDueDateLabel, taskDueDateInput);
+
+      saveButton.addEventListener("click", function() {
+        taskIdLabel.innerText = "ID: \n" + taskIdInput.value;
+        taskProjectNameLabel.innerText = "Nombre del proyecto: \n" + taskProjectNameInput.value;
+        taskDescriptionLabel.innerText = "Descripción: \n" + taskDescriptionInput.value;
+        taskDetailsLabel.innerText = "Detalles: \n" + taskDetailsInput.value;
+        taskMembersLabel.innerText = "Miembros: \n" + taskMembersInput.value;
+        taskStartDateLabel.innerText = "Fecha de inicio: \n" + taskStartDateInput.value;
+        taskDueDateLabel.innerText = "Fecha límite: \n" + taskDueDateInput.value;
+
+       
+        var searchId = taskIdInput.value.substring(4);
+        var tasksArray = JSON.parse(localStorage.getItem("tasks")) || [];
+
+        var taskIndex = tasksArray.findIndex(function(item) {
+          return item.id === searchId;
+        });
+
+
+
+        if (taskIndex !== -1) {
+          tasksArray.splice(taskIndex, 1);
+            localStorage.setItem("tasks", JSON.stringify(tasksArray));
+          resetTaskDetails();
+
+          localStorage.setItem("tasks", JSON.stringify(tasksArray));
+        }
+
+        editButton.style.display = "inline-block";
+        saveButton.style.display = "none";
+        
+      });
+    
+    }
+
+    function createTextInput(value) {
+      var input = document.createElement("input");
+      input.type = "text";
+      input.value = value;
+      return input;
+    }
+
+    function replaceElement(oldElement, newElement) {
+      oldElement.parentNode.replaceChild(newElement, oldElement);
+    }
+
+    document.getElementById("editButton").addEventListener("click", toggleEdit);
+
+    function resetTaskDetails() {
+      document.getElementById("searchInput").value = "";
+      resetTaskDetailsFields();
+    }
+
+    function resetTaskDetailsFields() {
+      document.getElementById("taskIdLabel").innerHTML = "ID:ss";
+      document.getElementById("taskProjectNameLabel").innerHTML = "Nombre del proyecto:";
+      document.getElementById("taskDescriptionLabel").innerHTML = "Descripción:";
+      document.getElementById("taskDetailsLabel").innerHTML = "Detalles:";
+      document.getElementById("taskMembersLabel").innerHTML = "Miembros:";
+      document.getElementById("taskStartDateLabel").innerHTML = "Fecha de inicio:";
+      document.getElementById("taskDueDateLabel").innerHTML = "Fecha límite:";
+      document.getElementById("taskImagePreview").style.backgroundImage = "url(" + task.image + ")";
+    }
+  </script>
+</body>
+</html>

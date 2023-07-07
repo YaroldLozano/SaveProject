@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Menú</title>
+  <link rel="stylesheet" href="menu.css">
+</head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<body>
+  <div class="content">
+
+      <div class="menu container">
+        <div class="logo">
+            <div> 
+              <a href="menu.html"></a>
+              <img src="logo.jpeg" alt="..." class="img-thumbnail"></a>
+             </div>
+        </div>
+          
+          <input type="checkbox" id="menu" />
+          <label for="menu">
+            <img src="menu.png" class="menu-icono" alt="">
+          </label>
+          <nav class="navbar">
+            <ul>
+                <li><a href="AgregarTarea.html">Agregar tarea</a></li>
+                <li><a href="consultar_tareas.html">Consultar tarea</a></li>
+                <li><a href="calendario.html">Horario</a></li>
+                <li><a href="registro.html">Sign Up</a></li>
+                <li><a href="index.html">Login</a></li>
+            </ul>
+
+        </nav>
+      </div>
+  </div>
+
+  
+  <div class="contact-form">
+    <h2>Contacto</h2>
+    <form>
+      <label for="name">Nombre:</label>
+      <input type="text" id="name" required>
+      <label for="email">Email:</label>
+      <input type="text" id="email" required>
+      <label for="message">Mensaje:</label>
+      <textarea id="message" required></textarea>
+      <button class="diseño">
+        <span> Enviar</span>
+      </button>
+    </form>
+  </div>
+
+  <div class="about-us">
+    <center><h2>SOBRE NOSOTROS </h2></center>
+    <center><p>Somos una empresa dedicada a brindar soluciones y servicios de alta calidad, podras crear tu cuenta y crear y gestionar tus proyectos.</p></center>
+  <div class="social-icons">
+    <a href="https://accounts.google.com/" class="social-icon"><i class="fab fa-google"></i></a>
+    <a href="https://es-la.facebook.com/login/device-based/regular/login/" class="social-icon"><i class="fab fa-facebook"></i></a>
+    <a href="https://support.apple.com/es-lamr/HT204053" class="social-icon"><i class="fab fa-apple"></i></a>
+    <a href=""
+  </div>
+  
+  <script src="https://kit.fontawesome.com/your-font-awesome-kit.js" crossorigin="anonymous"></script>
+  <script>
+    // Código JavaScript para la funcionalidad del slider con flechas de navegación
+    var slider = document.querySelector(".slider");
+    var slideWidth = slider.clientWidth;
+    var slideIndex = 0;
+    
+    var prevButton = document.querySelector(".prev");
+    var nextButton = document.querySelector(".next");
+    
+    prevButton.addEventListener("click", function() {
+      slideIndex--;
+      if (slideIndex < 0) {
+        slideIndex = 3;
+      }
+      updateSliderPosition();
+    });
+    
+    nextButton.addEventListener("click", function() {
+      slideIndex++;
+      if (slideIndex > 3) {
+        slideIndex = 0;
+      }
+      updateSliderPosition();
+    });
+    
+    function updateSliderPosition() {
+      var translateXValue = -slideIndex * slideWidth;
+      slider.querySelector("ul").style.transform = "translateX(" + translateXValue + "px)";
+    }
+  </script>
+</body>
+</html>
